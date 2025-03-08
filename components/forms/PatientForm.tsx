@@ -35,12 +35,18 @@ const PatientForm = () => {
       const userData = { name, email, phone };
 
       const newUser = await createUser(userData);
-
+      if (!newUser) {
+        setLoding(false);
+        throw new Error(
+          "can not create user maybe use different phone or email"
+        );
+      }
       if (newUser) router.push(`/patients/${newUser.$id}/register`);
 
       console.log(userData);
     } catch (error) {
       console.log(error);
+      setLoding(false);
     }
   }
 

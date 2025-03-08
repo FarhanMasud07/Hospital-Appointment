@@ -13,6 +13,7 @@ export const createUser = async(user: CreateUserParams) => {
             undefined, 
             user.name
         );
+        if(!newUser) return null;
         return parseStringify(newUser);
     } catch(error: any) {
         if(error && error?.code === 409)  {
@@ -28,6 +29,7 @@ export const createUser = async(user: CreateUserParams) => {
 export const getUser = async(userId: string) => {
     try {
         const user = await users.get(userId);
+        if(!user) return null;
         return parseStringify(user);
     } catch (error: any) {
         console.error(
@@ -85,7 +87,7 @@ export const getPatient = async (userId: string) => {
         PATIENT_COLLECTION_ID!,
         [Query.equal("userId", [userId])]
       );
-  
+      if(!patients ||  !patients.documents.length) return null;
       return parseStringify(patients.documents[0]);
     } catch (error) {
       console.error(
